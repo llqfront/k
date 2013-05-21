@@ -13,4 +13,5 @@ textarea {overflow:auto;resize:none;}
 a img {border:none;}
 .z_index{position:fixed;_position:absolute;z-index:999;display:none;}
 .pr {position:relative;}.pa {position:absolute;}.fl {float:left;}.fr {float:right;}
-.m960 {margin:0 auto;width:960px;}.t10 {margin-top:10px;}a:hover{text-decoration:underline}
+.m960 {margin:0 auto;width:960px;}.t10 {margin-top:10px;}
+a:hover{text-decoration:underline}
