@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>模拟滚动条</title>
+<meta name="description" content="模拟滚动条"/>
+<meta name="keywords" content="模拟滚动条"/>
+<link rel="stylesheet" href="https://github.com/llqfront/k/blob/master/css/css">
+<script src="https://github.com/llqfront/k/blob/master/javascript/jspublic.js"></script>
+<style>
+.k_scroll_father {width:600px;height:600px;border:1px solid #ccc;margin:10px auto;overflow:hidden;}
+.k_s_con {line-height:28px;padding:10px;}
+.k_bar_parent {width:10px;background:#ccc;position:absolute;right:0;top:0;display:none;z-index:10;}
+.k_bar {width:10px;background:blue;position:absolute;right:0;top:0;}
+</style>
+</head>
+<body>
+<div class="k_scroll_father pr" id="k_parent">
+  <div class="k_s_con pa" id="k_con">
+	  1鲜花经验值：当前为 1， 完成今日上限还需93朵鲜花<br/>
+      2礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+	  3鲜花经验值：当前为 1， 完成今日上限还需93朵鲜花<br/>
+      4礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+	  5鲜花经验值：当前为 1， 完成今日上限还需93朵鲜花<br/>
+      6礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      37礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      38礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      39礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+      40礼物经验值：当前为 0， 完成今日上限还需5940呱币<br/>
+
+      41礼物经验值：当前为 0， 完成今日上限还需5940呱币
+	  </div>
+</div>
+<input type="button" value="点击" id="k_btn"/>
+<script>
+function ScrollBar(oParent,oContent,blo){
+	this.oConFather = Q(oParent)[0];
+	this.oCon = Q(oContent)[0];
+	this.oBar = document.createElement('div');
+	this.oOpt = document.createElement('div');
+	this.oBar.className='k_bar_parent';
+	this.oOpt.className='k_bar';
+	this.oBar.appendChild(this.oOpt);
+	this.oConFather.appendChild(this.oBar);
+	this.scale = 0;
+	this.disY = 0;
+	this.it = 0;
+	this.bDown = true;
+	this.timer = null;
+	var _this = this;
+	this.t = 0;
+	this.scaleSizeY = 0;
+	this.iHeight = 0;
+	if(this.oOpt.offsetHeight<=50){
+		this.oOpt.style.height = '50px';
+	}
+	clearInterval(this.timer);
+	addEvent(this.oConFather,'mousewheel',function(ev){
+		_this.mouseFn(ev);
+	});
+	addEvent(this.oConFather,'DOMMouseScroll',function(ev){
+		_this.mouseFn(ev);
+	});
+	addEvent(this.oOpt,'mousedown',function(ev){
+		_this.downFn(ev);
+		return false;
+	});
+	_this.optFn();
+	this.timer = setInterval(function(){
+		_this.optFn();
+	},200);
+}
+ScrollBar.prototype.mouseFn = function(ev){
+	var oEvent = ev || event;
+	var _this = this;
+	this.bDown = oEvent.wheelDelta ? oEvent.wheelDelta<0 : oEvent.detail>0;
+	if(this.bDown){
+		_this.setTop(this.oOpt.offsetTop+10);
+	}else {
+		_this.setTop(this.oOpt.offsetTop-10);
+	}
+	if(oEvent.preventDefault){
+		oEvent.preventDefault();
+	}
+	return false;
+}
+ScrollBar.prototype.downFn = function(ev){
+	var oEvent = ev || event;
+	var _this = this;
+	this.disY = oEvent.clientY-this.oOpt.offsetTop;
+	if(this.oOpt.setCapture){
+		this.oOpt.onmousemove = function(ev){
+			_this.fnMove(ev);
+		};
+		this.oOpt.onmouseup = function(){
+			_this.fnUp(this);
+		};
+		this.oOpt.setCapture();
+	}else {
+		document.onmousemove = function(ev){
+			_this.fnMove(ev);
+		};
+		document.onmouseup = function(){
+			_this.fnUp(this);
+		};
+	}
+	return false;
+}
+ScrollBar.prototype.fnMove = function(ev){
+	var oEvent = ev || event;
+	this.it = oEvent.clientY - this.disY;
+	var _this = this;
+	_this.setTop(this.it);
+}
+ScrollBar.prototype.fnUp = function(o){
+	o.onmousemove = o.onmouseup = null;
+	if(o.releaseCapture){
+		o.releaseCapture();
+	}
+}
+ScrollBar.prototype.setTop = function(iTop){
+	if(iTop<0){
+		iTop = 0;
+	}else if(iTop > this.oBar.offsetHeight-this.oOpt.offsetHeight){
+		iTop = this.oBar.offsetHeight-this.oOpt.offsetHeight;
+	}
+	this.oOpt.style.top = iTop + 'px';
+	this.scale = iTop/(this.oBar.offsetHeight-this.oOpt.offsetHeight);
+	this.oCon.style.top = -(this.oCon.offsetHeight-this.oConFather.offsetHeight)*this.scale+'px';
+}
+ScrollBar.prototype.optFn = function(){
+	this.scaleSizeY = this.oConFather.offsetHeight/this.oCon.offsetHeight;
+	this.iHeight = this.oConFather.offsetHeight;
+	this.oBar.style.height = this.oConFather.offsetHeight+'px';
+	this.oOpt.style.height = this.scaleSizeY*this.iHeight+'px';
+	if(this.oCon.offsetHeight<=this.oConFather.offsetHeight){
+		this.oBar.style.display = 'none';
+	}else {
+		this.oBar.style.display = 'block';
+	}
+}
+var ggscro = new ScrollBar('#k_parent','#k_con');
+var oA = Q('#k_btn')[0];
+oA.onclick = function(){
+	var oDi = document.createElement('div');
+	oDi.innerHTML = '这是什么这是什么'+'<br/>';
+	Q('#k_con')[0].appendChild(oDi);
+}
+</script>
+</body>
+</html>
